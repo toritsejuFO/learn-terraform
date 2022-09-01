@@ -4,8 +4,7 @@ variable "main_vpc_cidr" {
   description = "VPC CIDR block"
   type = string
 }
-
-variable main_vpc_name {}
+variable "main_vpc_name" {}
 
 # Subnet
 variable "public_subnet_cidr" {
@@ -13,5 +12,12 @@ variable "public_subnet_cidr" {
   description = "Public Subnet CIDR block"
   type = string
 }
-
 variable "public_subnet_zone" {}
+
+# Security Group
+variable "my_public_ip" {}
+
+# General
+variable "all_addresses" {
+  default = "0.0.0.0/0"
+}
