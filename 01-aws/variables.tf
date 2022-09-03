@@ -12,7 +12,7 @@ variable "public_subnet_cidr" {
   description = "Public Subnet CIDR block"
   type = string
 }
-variable "public_subnet_zone" {}
+# variable "public_subnet_zone" {}
 
 # Security Group
 variable "my_public_ip" {}

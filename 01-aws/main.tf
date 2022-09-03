@@ -15,6 +15,19 @@ provider "aws" {
 
 data "aws_availability_zones" "azs" {}
 
+data "aws_ami" "latest_amazon_linux2" {
+  owners = ["amazon"]
+  most_recent = true
+  filter {
+    name = "architecture"
+    values = ["x86_64"]
+  }
+  filter {
+    name = "name"
+    values = ["amzn2-ami-kernel-*-x86_64-gp2"]
+  }
+}
+
 resource "aws_vpc" "main_vpc" {
   cidr_block = var.main_vpc_cidr
   tags = {
@@ -65,6 +78,12 @@ resource "aws_default_security_group" "default_sg" {
     cidr_blocks = [var.all_addresses]
     protocol = "tcp"
   }
+  ingress {
+    to_port = 8080
+    from_port = 8080
+    cidr_blocks = [var.all_addresses]
+    protocol = "tcp"
+  }
   egress {
     to_port = 0
     from_port = 0
@@ -73,5 +92,24 @@ resource "aws_default_security_group" "default_sg" {
   }
   tags = {
     Name = "Default SG"
+  }
+}
+
+resource "aws_key_pair" "ec2_key_pair" {
+  key_name = "id_rsa"
+  public_key = file("~/.ssh/ec2_kp.pub")
+}
+
+resource "aws_instance" "ec2_instance" {
+  # ami = "ami-05fa00d4c63e32376"
+  ami = data.aws_ami.latest_amazon_linux2.id
+  instance_type = "t2.micro"
+  subnet_id = aws_subnet.public_subnet.id
+  vpc_security_group_ids = [aws_default_security_group.default_sg.id]
+  associate_public_ip_address = true
+  key_name = aws_key_pair.ec2_key_pair.key_name
+  user_data = file("entry-script.sh")
+  tags = {
+    Name = "EC2 Instance"
   }
 }
