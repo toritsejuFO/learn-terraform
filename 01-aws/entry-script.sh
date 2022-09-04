@@ -5,4 +5,4 @@ sudo echo "<h1>Deployed via Terraform</h1>" > /var/www/html/index.html
 
 sudo yum install -y docker
 sudo systemctl start docker
-sudo docker container run -p 8080:80 nginx
+sudo docker container run -d -p 8080:80 nginx

@@ -3,5 +3,6 @@
 *.tfstate
 *.tfstate.*
 
-# Key pair
 *.cer
+
+web-app-template.yaml
