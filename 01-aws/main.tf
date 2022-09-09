@@ -135,5 +135,6 @@ resource "aws_instance" "ec2_instance" {
 
   tags = {
     Name = "EC2 Instance"
+    Environment = local.Environment
   }
 }
