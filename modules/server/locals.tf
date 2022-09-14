@@ -1,0 +1,3 @@
+locals {
+  Environment = "Learn-Terraform"
+}
